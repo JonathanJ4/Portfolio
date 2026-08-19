@@ -1,19 +1,67 @@
 ---
 import BaseLayout from "../layout/BaseLayout.astro";
+import ProjectRow from "../components/ProjectRow.astro";
 ---
 
 <BaseLayout title="Jonathan Thomas">
-	<header>
+	<header class="home-intro">
 		<h1>Jonathan Thomas</h1>
-
+		<div class="home-intro__summary">
+			<p>Computer Science student at Toronto Metropolitan University.</p>
+			<p>Previously a Software Engineering Intern at Ontario Public Service.</p>
+		</div>
+		<p class="home-intro__interests">
+			I’m interested in backend systems, AI and retrieval-augmented generation, and systems programming.
+		</p>
 	</header>
 
-	<section class="home-section" aria-labelledby="currently-heading">
-		
-		<p>I am an aspiring software engineer that is exploring all sides of tech like AI engineered systems embeddedd systems micro controllers robotics ml 
+	<section class="home-section" aria-labelledby="projects-heading">
+		<h2 id="projects-heading">projects</h2>
 
-		Outside of all this noise you will find me trying some new food recipe or playing games Xb 
-		
-		</p>
+		<div class="project-list">
+			<ProjectRow
+				title="Wallex"
+				year={2026}
+				description="Personal finance application."
+				href="/projects"
+			/>
+			<ProjectRow
+				title="Recipe Hub"
+				year={2026}
+				description="RAG-powered recipe search."
+				href="/projects"
+			/>
+			<ProjectRow
+				title="KV Store"
+				year={2026}
+				description="Systems programming in Rust."
+				href="/projects"
+			/>
+		</div>
+
+		<a class="section-link" href="/projects">all projects →</a>
+	</section>
+
+	<section class="home-section" aria-labelledby="experience-heading">
+		<h2 id="experience-heading">experience</h2>
+
+		<div class="experience-row">
+			<div>
+				<h3>Ontario Public Service</h3>
+				<p>Software Engineering Intern</p>
+			</div>
+			<time datetime="2026">2026</time>
+		</div>
+	</section>
+
+	<section class="home-section" aria-labelledby="elsewhere-heading">
+		<h2 id="elsewhere-heading">elsewhere</h2>
+
+		<ul class="elsewhere-links">
+			<li><a href="https://github.com/JonathanJ4">GitHub</a></li>
+			<li><span>LinkedIn <small>(link pending)</small></span></li>
+			<li><span>Resume <small>(file pending)</small></span></li>
+			<li><a href="mailto:jonathanthomasv6@gmail.com">Email</a></li>
+		</ul>
 	</section>
 </BaseLayout>
