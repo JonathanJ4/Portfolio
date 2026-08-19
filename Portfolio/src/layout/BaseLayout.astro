@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { title } = Astro.props;
+const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 ---
 
 <!doctype html>
@@ -21,12 +22,18 @@ const { title } = Astro.props;
 	<body>
 		<div class="site-shell">
 			<header class="site-navigation">
-				<a class="site-identity" href="/">JTV</a>
+				
 
 				<nav aria-label="Primary navigation">
-					<a href="/projects">Projects</a>
-					<a href="/hobbies">Hobbies</a>
-					<a href="/contact">Contact</a>
+					<a href="/projects" aria-current={currentPath === "/projects" ? "page" : undefined}>
+						/projects
+					</a>
+					<a href="/hobbies" aria-current={currentPath === "/hobbies" ? "page" : undefined}>
+						/hobbies
+					</a>
+					<a href="/contact" aria-current={currentPath === "/contact" ? "page" : undefined}>
+						/contact
+					</a>
 				</nav>
 			</header>
 
