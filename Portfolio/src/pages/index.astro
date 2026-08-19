@@ -13,35 +13,8 @@ import ProjectRow from "../components/ProjectRow.astro";
 		</p>
 	</header>
 
-	<section class="home-section" aria-labelledby="projects-heading">
-		<h2 id="projects-heading">projects</h2>
-
-		<div class="project-list">
-			<ProjectRow
-				title="Wallex"
-				year={2026}
-				description="Personal finance application."
-				href="/projects"
-			/>
-			<ProjectRow
-				title="Recipe Hub"
-				year={2026}
-				description="RAG-powered recipe search."
-				href="/projects"
-			/>
-			<ProjectRow
-				title="KV Store"
-				year={2026}
-				description="Systems programming in Rust."
-				href="/projects"
-			/>
-		</div>
-
-		<a class="section-link" href="/projects">all projects →</a>
-	</section>
-
 	<section class="home-section" aria-labelledby="experience-heading">
-		<h2 id="experience-heading">experience</h2>
+		<h2 id="experience-heading">Experience</h2>
 
 		<div class="experience-row">
 			<div>
@@ -52,8 +25,34 @@ import ProjectRow from "../components/ProjectRow.astro";
 		</div>
 	</section>
 
+	<section class="home-section" aria-labelledby="projects-heading">
+		<h2 id="projects-heading">Projects</h2>
+
+		<div class="project-list">
+			<ProjectRow
+				title="Wallex"
+				year={2026}
+				href="/projects"
+			/>
+			<ProjectRow
+				title="Recipe Hub"
+				year={2026}
+				href="/projects"
+			/>
+			<ProjectRow
+				title="KV Store"
+				year={2026}
+				href="/projects"
+			/>
+		</div>
+
+		<a class="section-link" href="/projects">all projects →</a>
+	</section>
+
+
+
 	<section class="home-section" aria-labelledby="elsewhere-heading">
-		<h2 id="elsewhere-heading">elsewhere</h2>
+		
 
 		<ul class="elsewhere-links">
 			<li><a href="https://github.com/JonathanJ4">GitHub</a></li>

@@ -12,7 +12,7 @@
 
 	--space-1: 0.25rem;
 	--space-2: 0.5rem;
-	--space-3: 5rem;
+	--space-3: 1rem;
 	--space-4: 1.5rem;
 	--space-5: 2rem;
 	--space-6: 3rem;
@@ -21,6 +21,7 @@
 
 	--content-width: 35rem;
 	--text-measure: 40rem;
+	--navigation-offset: 5rem;
 }
 
 * {
@@ -132,11 +133,11 @@ a:focus-visible {
 }
 
 .project-list {
-	margin-top: var(--space-4);
+	margin-top: var(--space-2);
 }
 
 .project-row + .project-row {
-	margin-top: var(--space-5);
+	margin-top: var(--space-2);
 }
 
 .project-row__link {
@@ -159,18 +160,16 @@ a:focus-visible {
 	font-weight: 600;
 }
 
-.project-row time,
+.project-row__metadata,
 .experience-row time {
 	color: var(--color-muted);
 	font-size: var(--text-small);
 }
 
-.project-row__summary {
-	display: grid;
-	grid-template-columns: minmax(0, 1fr) auto;
-	gap: var(--space-4);
-	margin-top: var(--space-1);
-	color: var(--color-muted);
+.project-row__metadata {
+	display: flex;
+	align-items: baseline;
+	gap: var(--space-2);
 }
 
 .project-row__link:hover h3,
@@ -185,7 +184,7 @@ a:focus-visible {
 
 .section-link {
 	display: inline-block;
-	margin-top: var(--space-5);
+	margin-top: var(--space-3);
 	color: var(--color-muted);
 	font-size: var(--text-small);
 	text-decoration: none;
@@ -247,7 +246,7 @@ a:focus-visible {
 
 	.site-navigation {
 		gap: var(--space-7);
-		padding-top: var(--space-3);
+		padding-top: var(--navigation-offset);
 	}
 
 	.site-navigation nav {

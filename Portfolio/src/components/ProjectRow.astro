@@ -2,22 +2,20 @@
 interface Props {
 	title: string;
 	year: number;
-	description: string;
 	href: string;
 }
 
-const { title, year, description, href } = Astro.props;
+const { title, year, href } = Astro.props;
 ---
 
 <article class="project-row">
 	<a class="project-row__link" href={href}>
 		<div class="project-row__heading">
 			<h3>{title}</h3>
-			<time datetime={String(year)}>{year}</time>
+			<span class="project-row__metadata">
+				<time datetime={String(year)}>{year}</time>
+				<span aria-hidden="true">→</span>
+			</span>
 		</div>
-		<span class="project-row__summary">
-			<span>{description}</span>
-			<span aria-hidden="true">→</span>
-		</span>
 	</a>
 </article>
