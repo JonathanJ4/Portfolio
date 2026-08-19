@@ -117,22 +117,8 @@ a:focus-visible {
 	line-height: var(--line-height-heading);
 }
 
-.home-intro__summary {
-	margin-top: var(--space-4);
-}
-
-.home-intro__summary p,
-.home-intro__interests {
-	margin: 0;
-}
-
-.home-intro__summary p + p {
-	margin-top: var(--space-1);
-}
-
-.home-intro__interests {
-	margin-top: var(--space-4);
-	color: var(--color-muted);
+.home-intro__story {
+	margin: var(--space-4) 0 0;
 }
 
 .home-section {
