@@ -22,17 +22,21 @@ const currentPath = Astro.url.pathname.replace(/\/+$/, "") || "/";
 	<body>
 		<div class="site-shell">
 			<header class="site-navigation">
+
 				
 
 				<nav aria-label="Primary navigation">
+                    <a href="/" aria-current={currentPath === "/" ? "page" : undefined}>
+						home
+					</a>
 					<a href="/projects" aria-current={currentPath === "/projects" ? "page" : undefined}>
-						/projects
+						projects
 					</a>
 					<a href="/hobbies" aria-current={currentPath === "/hobbies" ? "page" : undefined}>
-						/hobbies
+						hobbies
 					</a>
 					<a href="/contact" aria-current={currentPath === "/contact" ? "page" : undefined}>
-						/contact
+						contact
 					</a>
 				</nav>
 			</header>
