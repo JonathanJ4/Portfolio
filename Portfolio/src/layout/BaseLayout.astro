@@ -1,4 +1,6 @@
 ---
+import "../styles/global.css";
+
 interface Props {
 	title: string;
 }
@@ -17,21 +19,22 @@ const { title } = Astro.props;
 		<title>{title}</title>
 	</head>
 	<body>
-		<div class="site-layout">
-			<nav class="site-navigation" aria-label="Primary navigation">
-				<a href="/">Home</a>
-				<a href="/projects">Projects</a>
-				<a href="/hobbies">Hobbies</a>
-				<a href="/contact">Contact</a>
-			</nav>
+		<div class="site-shell">
+			<header class="site-navigation">
+				<a class="site-identity" href="/">JTV</a>
+
+				<nav aria-label="Primary navigation">
+					<a href="/projects">Projects</a>
+					<a href="/hobbies">Hobbies</a>
+					<a href="/contact">Contact</a>
+				</nav>
+			</header>
 
 			<main class="site-content">
 				<slot />
 			</main>
 
-			<div class="site-interaction">
-				<slot name="interaction" />
-			</div>
+			<div class="site-interaction" aria-hidden="true"></div>
 		</div>
 	</body>
 </html>
