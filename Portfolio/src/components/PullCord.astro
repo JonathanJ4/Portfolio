@@ -1,0 +1,256 @@
+<div class="pull-cord" data-pull-cord data-armed="false">
+	<canvas class="pull-cord__canvas" width="160" height="336" aria-hidden="true"></canvas>
+	<button class="pull-cord__control" type="button" data-theme-toggle aria-pressed="false">
+		<span class="pull-cord__label">Toggle color theme</span>
+	</button>
+</div>
+
+<script>
+	import { RopeSimulation, type RopePosition } from "../scripts/rope";
+	import { initializeTheme, toggleTheme } from "../scripts/theme";
+
+	const root = document.querySelector<HTMLElement>("[data-pull-cord]");
+	const canvas = root?.querySelector<HTMLCanvasElement>(".pull-cord__canvas");
+	const control = root?.querySelector<HTMLButtonElement>(".pull-cord__control");
+	const context = canvas?.getContext("2d");
+
+	if (root && canvas && control && context) {
+		initializeTheme();
+
+		const simulation = new RopeSimulation();
+		const desktop = window.matchMedia("(min-width: 64rem)");
+		const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+		let canvasWidth = 0;
+		let canvasHeight = 0;
+		let previousFrame = performance.now();
+		let dragging = false;
+		let moved = false;
+		let armed = false;
+		let suppressNextClick = false;
+		let startPosition: RopePosition = { x: 0, y: 0 };
+		let dragOffset: RopePosition = { x: 0, y: 0 };
+		let ropeColor = "currentColor";
+		let armedColor = "currentColor";
+
+		const pointerPosition = (event: PointerEvent): RopePosition => {
+			const bounds = root.getBoundingClientRect();
+			return { x: event.clientX - bounds.left, y: event.clientY - bounds.top };
+		};
+
+		const updateColors = (): void => {
+			const styles = window.getComputedStyle(root);
+			ropeColor = styles.getPropertyValue("--color-rope").trim() || styles.color;
+			armedColor = styles.getPropertyValue("--color-foreground").trim() || styles.color;
+		};
+
+		const render = (): void => {
+			const points = simulation.ropePoints();
+			if (points.length < 2) return;
+
+			context.clearRect(0, 0, canvasWidth, canvasHeight);
+			context.beginPath();
+			context.moveTo(points[0].x, points[0].y);
+
+			for (let index = 1; index < points.length - 1; index += 1) {
+				const point = points[index];
+				const nextPoint = points[index + 1];
+				const midpointX = (point.x + nextPoint.x) / 2;
+				const midpointY = (point.y + nextPoint.y) / 2;
+				context.quadraticCurveTo(point.x, point.y, midpointX, midpointY);
+			}
+
+			const handle = points[points.length - 1];
+			context.lineTo(handle.x, handle.y);
+			context.lineWidth = armed ? 1.5 : 1.1;
+			context.strokeStyle = armed ? armedColor : ropeColor;
+			context.stroke();
+
+			control.style.left = `${handle.x}px`;
+			control.style.top = `${handle.y}px`;
+		};
+
+		const configure = (): void => {
+			const bounds = root.getBoundingClientRect();
+			const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+			canvasWidth = Math.max(1, bounds.width);
+			canvasHeight = Math.max(1, bounds.height);
+			canvas.width = Math.round(canvasWidth * pixelRatio);
+			canvas.height = Math.round(canvasHeight * pixelRatio);
+			context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+
+			const ropeLength = Math.min(desktop.matches ? 170 : 92, canvasHeight - 42);
+			simulation.reset(canvasWidth, canvasHeight, ropeLength, desktop.matches ? 12 : 8);
+			updateColors();
+			render();
+		};
+
+		const setArmed = (isArmed: boolean): void => {
+			armed = isArmed;
+			root.dataset.armed = String(isArmed);
+		};
+
+		const releasePointer = (event: PointerEvent, allowToggle: boolean): void => {
+			if (!dragging) return;
+
+			dragging = false;
+			simulation.release();
+			control.classList.remove("is-dragging");
+
+			if (control.hasPointerCapture(event.pointerId)) {
+				control.releasePointerCapture(event.pointerId);
+			}
+
+			if (allowToggle && armed) {
+				toggleTheme();
+			}
+
+			if (moved) {
+				suppressNextClick = true;
+				window.setTimeout(() => {
+					suppressNextClick = false;
+				}, 0);
+			}
+
+			setArmed(false);
+		};
+
+		control.addEventListener("pointerdown", (event) => {
+			if (reducedMotion.matches || (event.pointerType === "mouse" && event.button !== 0)) return;
+
+			const pointer = pointerPosition(event);
+			const handle = simulation.handlePosition();
+			startPosition = pointer;
+			dragOffset = { x: pointer.x - handle.x, y: pointer.y - handle.y };
+			dragging = true;
+			moved = false;
+			control.classList.add("is-dragging");
+			control.setPointerCapture(event.pointerId);
+			simulation.grab(handle);
+		});
+
+		control.addEventListener("pointermove", (event) => {
+			if (!dragging) return;
+
+			event.preventDefault();
+			const pointer = pointerPosition(event);
+			const distanceMoved = Math.hypot(pointer.x - startPosition.x, pointer.y - startPosition.y);
+			moved ||= distanceMoved > 4;
+			simulation.moveHandle({ x: pointer.x - dragOffset.x, y: pointer.y - dragOffset.y });
+			setArmed(simulation.pullDistance() >= (desktop.matches ? 44 : 28));
+		});
+
+		control.addEventListener("pointerup", (event) => releasePointer(event, true));
+		control.addEventListener("pointercancel", (event) => releasePointer(event, false));
+
+		control.addEventListener("click", (event) => {
+			if (suppressNextClick) {
+				event.preventDefault();
+				return;
+			}
+
+			toggleTheme();
+			if (!reducedMotion.matches) simulation.nudge();
+		});
+
+		const animate = (timestamp: number): void => {
+			const elapsed = Math.min(timestamp - previousFrame, 34);
+			previousFrame = timestamp;
+
+			if (!reducedMotion.matches) simulation.step(elapsed);
+			render();
+			window.requestAnimationFrame(animate);
+		};
+
+		const resizeObserver = new ResizeObserver(configure);
+		resizeObserver.observe(root);
+		desktop.addEventListener("change", configure);
+		window.addEventListener("themechange", updateColors);
+		configure();
+		window.requestAnimationFrame(animate);
+	}
+</script>
+
+<style>
+	.pull-cord {
+		position: fixed;
+		top: 0;
+		right: var(--space-2);
+		z-index: 20;
+		width: 5rem;
+		height: 11rem;
+		color: var(--color-rope);
+		user-select: none;
+	}
+
+	.pull-cord__canvas {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		pointer-events: none;
+	}
+
+	.pull-cord__control {
+		position: absolute;
+		width: 2.75rem;
+		height: 2.75rem;
+		padding: 0;
+		transform: translate(-50%, -50%);
+		border: 0;
+		border-radius: 50%;
+		background: transparent;
+		color: var(--color-rope);
+		cursor: grab;
+		touch-action: none;
+	}
+
+	.pull-cord__control::before {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: 0.65rem;
+		height: 0.65rem;
+		transform: translate(-50%, -50%);
+		border: 1px solid currentColor;
+		border-radius: 50%;
+		background: var(--color-background);
+		content: "";
+	}
+
+	.pull-cord__control.is-dragging {
+		cursor: grabbing;
+	}
+
+	.pull-cord[data-armed="true"] .pull-cord__control {
+		color: var(--color-foreground);
+	}
+
+	.pull-cord[data-armed="true"] .pull-cord__control::before {
+		border-width: 2px;
+	}
+
+	.pull-cord__control:focus-visible {
+		outline: 1px solid currentColor;
+		outline-offset: 0;
+	}
+
+	.pull-cord__label {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	@media (min-width: 64rem) {
+		.pull-cord {
+			right: max(var(--space-7), calc((100vw - 96rem) / 2 + var(--space-7)));
+			width: 10rem;
+			height: 21rem;
+		}
+	}
+</style>
