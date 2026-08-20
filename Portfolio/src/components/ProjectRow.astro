@@ -8,7 +8,7 @@ interface Props {
 const { title, year, href } = Astro.props;
 ---
 
-<article class="project-row">
+<li class="project-row">
 	<a class="project-row__link" href={href}>
 		<div class="project-row__heading">
 			<h3>{title}</h3>
@@ -18,4 +18,4 @@ const { title, year, href } = Astro.props;
 			</span>
 		</div>
 	</a>
-</article>
+</li>

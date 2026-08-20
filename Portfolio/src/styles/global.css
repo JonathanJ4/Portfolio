@@ -138,6 +138,8 @@ a:focus-visible {
 .project-list {
 	margin-top: var(--space-2);
 	margin-left: var(--space-3);
+	padding-left: var(--space-3);
+	list-style: disc;
 }
 
 .project-row + .project-row {
