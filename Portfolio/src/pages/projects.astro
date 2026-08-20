@@ -12,11 +12,20 @@ interface Project {
 
 const projects: Project[] = [
 	{
+		title: "Wallex",
+		year: 2026,
+		description:
+			"A full-stack personal finance application that imports PDF bank statements and organizes transactions in a searchable dashboard.",
+		technologies: ["Spring Boot", "React", "PostgreSQL", "Docker", "PDFBox"],
+		href: "https://github.com/JonathanJ4/Wallex",
+	},
+	{
 		title: "Recipe Hub",
 		year: 2026,
 		description:
 			"A retrieval-augmented recipe application built around semantic search and useful recipe recommendations.",
-		technologies: ["FastAPI", "PostgreSQL", "pgvector", "RAG"],
+		technologies: ["React", "FastAPI", "PostgreSQL", "RAG"],
+		href: "https://github.com/JonathanJ4/RecipeHub",
 	},
 	{
 		title: "KV Server",
@@ -24,6 +33,7 @@ const projects: Project[] = [
 		description:
 			"A key-value store built in Rust to explore persistence, command-line interfaces, and systems programming fundamentals.",
 		technologies: ["Rust", "CLI", "Persistence"],
+		href: "https://github.com/JonathanJ4/KV-store-cli",
 	},
 ];
 ---
