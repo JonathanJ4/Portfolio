@@ -1,0 +1,98 @@
+---
+interface Props {
+	title: string;
+	year: number;
+	description: string;
+	technologies: string[];
+	href?: string;
+}
+
+const { title, year, description, technologies, href } = Astro.props;
+---
+
+<article class="project-entry">
+	<header class="project-entry__header">
+		<h2>
+			{
+				href ? (
+					<a href={href}>
+						{title}
+						<span aria-hidden="true">↗</span>
+					</a>
+				) : (
+					title
+				)
+			}
+		</h2>
+		<time datetime={String(year)}>{year}</time>
+	</header>
+
+	<p>{description}</p>
+
+	<ul class="project-entry__technologies" aria-label={`Technologies used in ${title}`}>
+		{technologies.map((technology) => <li>{technology}</li>)}
+	</ul>
+</article>
+
+<style>
+	.project-entry + .project-entry {
+		margin-top: var(--space-5);
+		padding-top: var(--space-5);
+		border-top: 1px solid var(--color-divider);
+	}
+
+	.project-entry__header {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) auto;
+		align-items: baseline;
+		gap: var(--space-4);
+	}
+
+	.project-entry h2 {
+		margin: 0;
+		font-size: var(--text-body);
+		font-weight: 500;
+		line-height: var(--line-height-body);
+	}
+
+	.project-entry h2 a {
+		display: inline-flex;
+		align-items: baseline;
+		gap: var(--space-2);
+		text-decoration: none;
+	}
+
+	.project-entry h2 a:hover,
+	.project-entry h2 a:focus-visible {
+		text-decoration: underline;
+		text-underline-offset: var(--space-1);
+	}
+
+	.project-entry time {
+		color: var(--color-muted);
+		font-variant-numeric: tabular-nums;
+	}
+
+	.project-entry p {
+		margin: var(--space-2) 0 0;
+		color: var(--color-muted);
+	}
+
+	.project-entry__technologies {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin: var(--space-3) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.project-entry__technologies li {
+		border: 1px solid var(--color-divider);
+		border-radius: 0.125rem;
+		padding: 0.0625rem 0.375rem;
+		color: var(--color-muted);
+		font-size: 0.75rem;
+		line-height: 1.25rem;
+	}
+</style>

@@ -1,7 +1,55 @@
 ---
 import BaseLayout from "../layout/BaseLayout.astro";
+import ProjectEntry from "../components/ProjectEntry.astro";
+
+interface Project {
+	title: string;
+	year: number;
+	description: string;
+	technologies: string[];
+	href?: string;
+}
+
+const projects: Project[] = [
+	{
+		title: "Recipe Hub",
+		year: 2026,
+		description:
+			"A retrieval-augmented recipe application built around semantic search and useful recipe recommendations.",
+		technologies: ["FastAPI", "PostgreSQL", "pgvector", "RAG"],
+	},
+	{
+		title: "KV Server",
+		year: 2026,
+		description:
+			"A key-value store built in Rust to explore persistence, command-line interfaces, and systems programming fundamentals.",
+		technologies: ["Rust", "CLI", "Persistence"],
+	},
+];
 ---
 
 <BaseLayout title="Projects | Jonathan Thomas">
-	<h1>Projects</h1>
+	<div class="projects-page">
+		<h1>Projects</h1>
+
+		<section class="projects-page__list" aria-label="Project list">
+			{
+				projects.map((project) => (
+					<ProjectEntry
+						title={project.title}
+						year={project.year}
+						description={project.description}
+						technologies={project.technologies}
+						href={project.href}
+					/>
+				))
+			}
+		</section>
+	</div>
 </BaseLayout>
+
+<style>
+	.projects-page__list {
+		margin-top: var(--space-5);
+	}
+</style>
