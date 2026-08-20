@@ -1,6 +1,7 @@
 <div class="pull-cord" data-pull-cord data-armed="false">
 	<canvas class="pull-cord__canvas" width="160" height="336" aria-hidden="true"></canvas>
 	<button class="pull-cord__control" type="button" data-theme-toggle aria-pressed="false">
+		<span class="pull-cord__hint" aria-hidden="true">pull me</span>
 		<span class="pull-cord__label">Toggle color theme</span>
 	</button>
 </div>
@@ -232,6 +233,19 @@
 	.pull-cord__control:focus-visible {
 		outline: 1px solid currentColor;
 		outline-offset: 0;
+	}
+
+	.pull-cord__hint {
+		position: absolute;
+		top: calc(50% + 0.75rem);
+		left: 50%;
+		transform: translateX(-50%);
+		font-family: var(--font-serif);
+		font-size: 0.875rem;
+		font-style: italic;
+		font-weight: 400;
+		line-height: 1;
+		white-space: nowrap;
 	}
 
 	.pull-cord__label {

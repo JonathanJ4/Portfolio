@@ -28,6 +28,8 @@
 	--content-width: 35rem;
 	--text-measure: 40rem;
 	--navigation-offset: 5rem;
+	--edge-fade-size: 2.5rem;
+	--edge-blur: 4px;
 	color-scheme: light;
 }
 
@@ -59,6 +61,45 @@ body {
 	line-height: var(--line-height-body);
 }
 
+body::before,
+body::after {
+	position: fixed;
+	right: 0;
+	left: 0;
+	z-index: 10;
+	height: var(--edge-fade-size);
+	pointer-events: none;
+	content: "";
+}
+
+body::before {
+	top: 0;
+	background: linear-gradient(to bottom, var(--color-background), transparent);
+}
+
+body::after {
+	bottom: 0;
+	background: linear-gradient(to top, var(--color-background), transparent);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+	body::before,
+	body::after {
+		-webkit-backdrop-filter: blur(var(--edge-blur));
+		backdrop-filter: blur(var(--edge-blur));
+	}
+
+	body::before {
+		-webkit-mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 70%) 55%, transparent 100%);
+		mask-image: linear-gradient(to bottom, black 0%, rgb(0 0 0 / 70%) 55%, transparent 100%);
+	}
+
+	body::after {
+		-webkit-mask-image: linear-gradient(to top, black 0%, rgb(0 0 0 / 70%) 55%, transparent 100%);
+		mask-image: linear-gradient(to top, black 0%, rgb(0 0 0 / 70%) 55%, transparent 100%);
+	}
+}
+
 a {
 	color: inherit;
 }
@@ -79,6 +120,8 @@ a:focus-visible {
 }
 
 .site-navigation {
+	position: relative;
+	z-index: 15;
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
@@ -287,6 +330,10 @@ a:focus-visible {
 }
 
 @media (min-width: 64rem) {
+	:root {
+		--edge-fade-size: 5rem;
+	}
+
 	.site-shell {
 		grid-template-columns: minmax(9rem, 12rem) minmax(0, var(--content-width)) minmax(9rem, 1fr);
 		align-items: start;
