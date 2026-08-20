@@ -44,6 +44,7 @@ body {
 	min-height: 100vh;
 	margin: 0;
 	font-size: var(--text-body);
+	font-weight: 350;
 	line-height: var(--line-height-body);
 }
 
@@ -90,6 +91,7 @@ a:focus-visible {
 	font-family: var(--font-serif);
 	font-size: var(--text-navigation);
 	font-style: italic;
+	font-weight: 400;
 	line-height: 1;
 	text-decoration: none;
 }
@@ -127,11 +129,15 @@ a:focus-visible {
 }
 
 .home-intro__story {
-	margin: var(--space-4) 0 0;
+	margin: var(--space-2) 0 0;
 }
 
 .home-section {
 	margin-top: var(--space-7);
+}
+
+.home-section--elsewhere {
+	border-top: 1px solid var(--color-divider);
 }
 
 .home-section > h2 {
@@ -142,10 +148,9 @@ a:focus-visible {
 }
 
 .project-list {
-	margin-top: var(--space-2);
-	margin-left: var(--space-3);
-	padding-left: var(--space-3);
-	list-style: disc;
+	margin: var(--space-2) 0 0;
+	padding: 0;
+	list-style: none;
 }
 
 .project-row + .project-row {
@@ -172,23 +177,30 @@ a:focus-visible {
 }
 
 .project-row h3 {
-	font-weight: 400;
+	font-weight: 350;
 }
 
 .experience-row h3 {
-	font-weight: 600;
+	font-weight: 350;
 }
 
 .project-row__metadata,
 .experience-row time {
 	color: var(--color-muted);
 	font-size: var(--text-row);
+	font-variant-numeric: tabular-nums;
+	white-space: nowrap;
 }
 
 .project-row__metadata {
-	display: flex;
+	display: grid;
+	grid-template-columns: 4ch 1ch;
 	align-items: baseline;
 	gap: var(--space-2);
+}
+
+.experience-row time {
+	width: calc(5ch + var(--space-2));
 }
 
 .project-row__link:hover h3,
@@ -202,9 +214,10 @@ a:focus-visible {
 }
 
 .section-link {
-	display: inline-block;
+	display: block;
+	width: max-content;
 	margin-top: var(--space-3);
-	margin-left: var(--space-3);
+	margin-left: auto;
 	color: var(--color-muted);
 	font-size: var(--text-row);
 	text-decoration: none;
@@ -216,11 +229,10 @@ a:focus-visible {
 	align-items: baseline;
 	gap: var(--space-4);
 	margin-top: var(--space-2);
-	margin-left: var(--space-3);
 }
 
 .experience-row p {
-	margin: var(--space-1) 0 0;
+	margin: 0 0 0 var(--space-1);
 	color: var(--color-muted);
 	font-size: var(--text-row);
 }
