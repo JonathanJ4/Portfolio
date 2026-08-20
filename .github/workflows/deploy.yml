@@ -19,6 +19,9 @@ jobs:
 
       - name: Build Astro site
         uses: withastro/action@v6
+        with:
+                path: ./Portfolio
+                package-manager: npm
 
   deploy:
     needs: build
